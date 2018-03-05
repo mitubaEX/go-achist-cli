@@ -4,16 +4,16 @@ import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"log"
-	"strings"
-	"strconv"
 	"os"
+	"strconv"
+	"strings"
 )
 
 type RateData struct {
 	performance int
-	newRate int
-	oldRate int
-	subset int
+	newRate     int
+	oldRate     int
+	subset      int
 }
 
 func Create(performance int, newRate int, subset int) *RateData {
@@ -25,10 +25,10 @@ func Create(performance int, newRate int, subset int) *RateData {
 	return newRateData
 }
 
-func GetRateSlice(doc *goquery.Document) []int{
+func GetRateSlice(doc *goquery.Document) []int {
 	var rateSlice = []int{}
 	doc.Find("td").Each(func(i int, s *goquery.Selection) {
-		if i >= 3 && i <= 5{
+		if i >= 3 && i <= 5 {
 
 			// oh my god
 			replaceStr := strings.Replace(strings.Replace(s.Text(), "\t", "", -1), "\n", "", -1)
@@ -43,7 +43,7 @@ func GetRateSlice(doc *goquery.Document) []int{
 	return rateSlice
 }
 
-func GetDoc(url string) *goquery.Document{
+func GetDoc(url string) *goquery.Document {
 	doc, err := goquery.NewDocument(url)
 	if err != nil {
 		log.Fatal(err)
@@ -52,9 +52,9 @@ func GetDoc(url string) *goquery.Document{
 }
 
 func PrintRate(rateData *RateData) {
-	var transition = "Highest"
+	var transition = "Up!!!"
 	if rateData.subset < 0 {
-		transition = "Lowest"
+		transition = "Down↓↓↓"
 	}
 	fmt.Printf("%d->%d(%d) %s\nPerformance %d\n",
 		rateData.oldRate, rateData.newRate, rateData.subset, transition, rateData.performance)
